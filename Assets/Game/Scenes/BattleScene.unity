@@ -1158,6 +1158,7 @@ GameObject:
   - component: {fileID: 1371243318}
   - component: {fileID: 1371243320}
   - component: {fileID: 1371243319}
+  - component: {fileID: 1371243321}
   m_Layer: 0
   m_Name: BattleSystems
   m_TagString: Untagged
@@ -1241,6 +1242,22 @@ MonoBehaviour:
   playerSpawnPoint: {fileID: 338698979}
   enemySpawnPoint: {fileID: 1005762346}
   unitsRoot: {fileID: 358182765}
+--- !u!114 &1371243321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371243315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ba2f16e1694c704089386cf602ca531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  waveConfig: {fileID: 11400000, guid: 6a2e08fbcc222874c983b32eb731d395, type: 2}
+  unitSpawner: {fileID: 1371243320}
+  playerBase: {fileID: 7074136}
+  startOnPlay: 1
 --- !u!1 &1480746343
 GameObject:
   m_ObjectHideFlags: 0

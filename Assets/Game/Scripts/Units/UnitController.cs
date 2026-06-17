@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public sealed class UnitController : MonoBehaviour
@@ -11,8 +12,11 @@ public sealed class UnitController : MonoBehaviour
 
     private float nextAttackTime;
 
+    public event Action<UnitController> OnUnitDied;
+
     public UnitConfig Config => config;
     public Team Team => config != null ? config.Team : global::Team.Player;
+    public Health Health => health;
     public bool IsInitialized { get; private set; }
     public bool IsDead { get; private set; }
 
@@ -220,6 +224,7 @@ public sealed class UnitController : MonoBehaviour
         }
 
         IsDead = true;
+        OnUnitDied?.Invoke(this);
         Destroy(gameObject, 0.1f);
     }
 }
