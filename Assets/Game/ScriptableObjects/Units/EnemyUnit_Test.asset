@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8e3dd96f0ff2004eada89ce31244c24, type: 3}
-  m_Name: Rifleman
+  m_Name: EnemyUnit_Test
   m_EditorClassIdentifier: Assembly-CSharp::UnitConfig
-  unitId: rifleman
-  displayName: Rifleman
-  team: 0
-  prefab: {fileID: 0}
+  unitId: enemyUnit_Test
+  displayName: EnemyUnit_Test
+  team: 1
+  prefab: {fileID: 4924486917022592887, guid: 69328d1f00c085644bd179aadf22062f, type: 3}
   maxHealth: 10
   damage: 2
   moveSpeed: 2

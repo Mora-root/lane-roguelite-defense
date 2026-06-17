@@ -514,7 +514,7 @@ Transform:
   m_GameObject: {fileID: 338698978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.5, y: -2, z: 0}
+  m_LocalPosition: {x: -7.65, y: -2.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1059,7 +1059,7 @@ Transform:
   m_GameObject: {fileID: 1005762345}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.5, y: -2, z: 0}
+  m_LocalPosition: {x: 7.59, y: -2.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1090,7 +1090,7 @@ Transform:
   m_GameObject: {fileID: 1048639874}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7, y: -2, z: 0}
+  m_LocalPosition: {x: -8.47, y: -2.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1121,7 +1121,7 @@ Transform:
   m_GameObject: {fileID: 1254886663}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7, y: -2, z: 0}
+  m_LocalPosition: {x: 8.01, y: -2.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1138,6 +1138,8 @@ GameObject:
   - component: {fileID: 1371243317}
   - component: {fileID: 1371243316}
   - component: {fileID: 1371243318}
+  - component: {fileID: 1371243320}
+  - component: {fileID: 1371243319}
   m_Layer: 0
   m_Name: BattleSystems
   m_TagString: Untagged
@@ -1190,6 +1192,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnergyDebugView
   energySystem: {fileID: 1371243316}
   energyText: {fileID: 423891069}
+--- !u!114 &1371243319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371243315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faba30b83bd84c945adbbe68dd458ca8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitSpawnDebugControls
+  unitSpawner: {fileID: 1371243320}
+  playerUnitConfig: {fileID: 11400000, guid: affa8116963a7b146abf0dc8c4826c9d, type: 2}
+  enemyUnitConfig: {fileID: 11400000, guid: 389bed84e5f8c9d4099e04ba204f5473, type: 2}
+--- !u!114 &1371243320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371243315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0e2971af9ad1454b918f1ca9a665401, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitSpawner
+  energySystem: {fileID: 1371243316}
+  playerSpawnPoint: {fileID: 338698979}
+  enemySpawnPoint: {fileID: 1005762346}
+  unitsRoot: {fileID: 358182765}
 --- !u!1 &1480746343
 GameObject:
   m_ObjectHideFlags: 0
