@@ -160,3 +160,6 @@ MonoBehaviour:
   config: {fileID: 11400000, guid: affa8116963a7b146abf0dc8c4826c9d, type: 2}
   health: {fileID: 1313564819125371586}
   visualRoot: {fileID: 0}
+  stopAtLaneEdge: 1
+  leftStopX: -6.5
+  rightStopX: 6.5

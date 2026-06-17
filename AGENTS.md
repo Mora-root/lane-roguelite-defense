@@ -3,21 +3,27 @@
 This is a Unity 2D mobile lane battler / roguelite defense prototype.
 
 The player has a base on the left side.
-The enemy has a base on the right side.
+The enemy side has an EnemyPortal / EnemySpawnGate on the right side.
 Units move along one horizontal lane.
-The player spends energy to summon units and push toward the enemy base.
+The player spends energy to summon units, defend the PlayerBase, and clear enemy waves.
 
-The main goal of each battle is to destroy the enemy base.
+The player wins a wave when all enemies in the wave have spawned and all spawned enemies are defeated.
+The player loses when the PlayerBase is destroyed.
 
 ## Current gameplay direction
 
 * 2D side-view
 * Portrait mobile screen
 * One horizontal lane
-* Short 1–2 minute battles
+* Short 1-2 minute battles
 * Hero-led combat
 * Unit summoning using energy
-* Enemy base destruction as the win condition
+* Enemy wave clearing as the win condition
+* PlayerBase destruction as the lose condition
+* EnemyPortal / EnemySpawnGate as a visual and enemy source object, without HP
+* Player units move right and fight enemies
+* Player units that reach the right side should stop near the enemy portal and wait for enemies
+* Enemy units move left and attack PlayerBase if they reach it
 * Roguelite upgrades between waves
 * Permanent rewards and progression after defeat
 
@@ -113,14 +119,15 @@ The MVP includes:
 
 * One battle scene
 * Main camera and battle layout
-* Player base and enemy base
+* PlayerBase with HP
+* EnemyPortal / EnemySpawnGate without HP
 * One hero
 * Energy generation
 * Unit summoning
 * Basic unit movement
 * Basic melee/ranged combat
 * Enemy spawning
-* Wave progression
+* Wave progression and wave-clear win condition
 * Temporary run upgrades
 * Simple rewards after defeat
 
@@ -161,7 +168,7 @@ The battle scene should contain:
 * Main Camera
 * BattleRoot
 * PlayerBaseSpawn
-* EnemyBaseSpawn
+* EnemyPortalSpawn or EnemySpawnGate
 * PlayerUnitSpawn
 * EnemyUnitSpawn
 * LaneRoot
@@ -176,6 +183,16 @@ Runtime-spawned units should be parented under `UnitsRoot`.
 Runtime-spawned projectiles should be parented under `ProjectilesRoot`.
 
 Runtime-spawned visual effects should be parented under `VFXRoot`.
+
+Player units should move right and fight enemies. If they reach the right side, they should stop near the enemy portal and wait for enemies.
+
+Enemy units should move left and attack PlayerBase if they reach it.
+
+EnemyPortal / EnemySpawnGate is a visual/source object and does not need HP.
+
+The player wins a wave when all enemies in that wave have spawned and all spawned enemies are defeated.
+
+The player loses when PlayerBase is destroyed.
 
 ## Current priority
 

@@ -5,6 +5,9 @@ public sealed class UnitController : MonoBehaviour
     [SerializeField] private UnitConfig config;
     [SerializeField] private Health health;
     [SerializeField] private Transform visualRoot;
+    [SerializeField] private bool stopAtLaneEdge = true;
+    [SerializeField] private float leftStopX = -20f;
+    [SerializeField] private float rightStopX = 6.5f;
 
     private float nextAttackTime;
 
@@ -160,8 +163,30 @@ public sealed class UnitController : MonoBehaviour
     private void MoveForward()
     {
         float direction = Team == global::Team.Player ? 1f : -1f;
+        if (stopAtLaneEdge && HasReachedStopX(direction))
+        {
+            return;
+        }
+
         float deltaX = direction * config.MoveSpeed * Time.deltaTime;
-        transform.position += new Vector3(deltaX, 0f, 0f);
+        Vector3 position = transform.position;
+        position.x += deltaX;
+
+        if (stopAtLaneEdge)
+        {
+            position.x = Team == global::Team.Player
+                ? Mathf.Min(position.x, rightStopX)
+                : Mathf.Max(position.x, leftStopX);
+        }
+
+        transform.position = position;
+    }
+
+    private bool HasReachedStopX(float direction)
+    {
+        return direction > 0f
+            ? transform.position.x >= rightStopX
+            : transform.position.x <= leftStopX;
     }
 
     private void UpdateVisualFacing()
