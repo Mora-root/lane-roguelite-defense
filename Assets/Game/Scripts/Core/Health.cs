@@ -19,6 +19,7 @@ public sealed class Health : MonoBehaviour
         maxHealth = Mathf.Max(0f, maxHealth);
         CurrentHealth = maxHealth;
         hasDied = CurrentHealth <= 0f;
+        OnHealthChanged?.Invoke(CurrentHealth, maxHealth);
     }
 
     public void TakeDamage(float amount)
