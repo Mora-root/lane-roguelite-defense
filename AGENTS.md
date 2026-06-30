@@ -1,218 +1,302 @@
-## Project
+# AGENTS.md
 
-This is a Unity 2D mobile lane battler / roguelite defense prototype.
+## Project Direction
 
-The player has a base on the left side.
-The enemy side has an EnemyPortal / EnemySpawnGate on the right side.
-Units move along one horizontal lane.
-The player spends energy to summon units, defend the PlayerBase, and clear enemy waves.
+This is a Unity 3D mobile isometric survival-strategy RPG prototype.
 
-The player wins a wave when all enemies in the wave have spawned and all spawned enemies are defeated.
-The player loses when the PlayerBase is destroyed.
+The player controls a hero, develops a camp, commands squads, builds defenses, and survives night monster attacks.
 
-## Current gameplay direction
+The project is no longer a 2D lane battler. New gameplay should target 3D.
 
-* 2D side-view
-* Portrait mobile screen
-* One horizontal lane
-* Short 1-2 minute battles
-* Hero-led combat
-* Unit summoning using energy
-* Enemy wave clearing as the win condition
-* PlayerBase destruction as the lose condition
-* EnemyPortal / EnemySpawnGate as a visual and enemy source object, without HP
-* Player units move right and fight enemies
-* Player units that reach the right side should stop near the enemy portal and wait for enemies
-* Enemy units move left and attack PlayerBase if they reach it
-* Roguelite upgrades between waves
-* Permanent rewards and progression after defeat
+## Core Gameplay
 
-## Development rules
+The mission/round is divided into repeated day and night phases.
 
-* Keep code simple and modular.
-* Prefer small focused components over large manager classes.
-* Use ScriptableObjects for unit, wave, hero, ability, and upgrade configuration.
-* Do not introduce third-party packages without approval.
-* Do not implement networking, ads, IAP, analytics, backend, or multiplayer in the MVP.
-* Do not modify unrelated files.
-* Do not change project settings unless explicitly requested.
-* Avoid global singletons for gameplay systems.
-* Avoid `FindObjectOfType`, `GameObject.Find`, and hidden scene lookups in gameplay logic.
-* Keep code readable for a solo developer.
+### Day Phase
 
-## DI-friendly architecture
+During the day, the player can:
 
-The project does not use a DI framework yet.
+* Control the hero with a joystick.
+* Explore a small map.
+* Clear neutral camps.
+* Collect resources.
+* Build or upgrade camp structures.
+* Prepare squads and defenses before the night attack.
 
-However, code should be written in a DI-friendly way so that Zenject, VContainer, or another DI framework can be introduced later if needed.
+Construction uses fixed building slots, not free placement.
+
+### Night Phase
+
+During the night:
+
+* Monsters attack the camp in waves.
+* Enemies come through clearly defined attack directions/passages.
+* For MVP, use one attack direction.
+* The player defends the MainBuilding.
+* The hero auto-attacks enemies within range.
+* Player squads and defensive buildings help defend the base.
+* Building and repairing at night should be restricted or disabled for MVP.
+
+## Win / Lose Conditions
+
+* Win condition: survive all night waves in the mission/round.
+* Lose condition: MainBuilding is destroyed.
+* Hero death is not an immediate loss. The hero may respawn later.
+
+Do not use enemy base destruction as a win condition.
+
+## Camp / Buildings
+
+The camp consists of multiple buildings.
+
+Important building types:
+
+* MainBuilding - critical structure; if destroyed, the player loses.
+* Walls - block or delay enemies on attack passages.
+* Towers - defensive buildings.
+* Barracks - provide access to player squads.
+* ResourceBuildings - generate or improve resource income.
+* SupportBuildings - healing, buffs, magic, utility, etc.
+
+MVP should start with:
+
+* MainBuilding.
+* One attack passage.
+* One wall slot.
+* One barracks slot.
+* Optional tower slot later.
+
+## Hero
+
+The hero is controlled directly by the player.
 
 Rules:
 
-* Do not use global service singletons for gameplay systems.
-* Do not use Service Locator patterns unless explicitly approved.
-* Prefer explicit dependencies through `SerializeField` for MonoBehaviours in the MVP.
-* Prefer constructor injection for plain C# classes.
-* Keep pure gameplay logic separate from Unity-specific MonoBehaviour code when reasonable.
-* Use interfaces only when they make dependencies clearer, not everywhere by default.
-* Systems should expose events or methods instead of directly controlling unrelated systems.
-* UI should observe gameplay state and send player commands, not contain core gameplay rules.
-* Factories and spawners should be responsible for creating runtime objects like units, projectiles, and VFX.
+* Movement: joystick.
+* Combat: auto-attack enemies in range.
+* Abilities can be added later.
+* Hero death does not fail the mission.
 
-## Folder structure
+## Squad-Based Combat
 
-Scripts should go under:
+Both player forces and ordinary enemy forces are represented as squads.
 
-Assets/Game/Scripts/
+A squad is one gameplay entity with:
 
-Subfolders:
+* Shared HP.
+* Shared movement.
+* Shared targeting.
+* Shared commands or AI.
+* One controller.
 
-* Core
-* Battle
-* Units
-* Hero
-* Energy
-* Waves
-* Upgrades
-* Rewards
-* Save
-* UI
+A squad may visually contain multiple members, but for MVP it can be represented by one placeholder object.
 
-ScriptableObjects should go under:
+Later, squad damage can scale with alive member count.
 
-Assets/Game/ScriptableObjects/
+Example:
 
-Subfolders:
+* 3 members alive = 100% damage.
+* 2 members alive = reduced damage.
+* 1 member alive = reduced damage.
 
-* Units
-* Heroes
-* Abilities
-* Waves
-* Upgrades
+Player squads:
 
-Prefabs should go under:
+* Can persist between waves until destroyed.
+* Can be selected.
+* Can receive commands:
+  * Move to position.
+  * Attack target.
 
-Assets/Game/Prefabs/
+Enemy squads:
 
-Subfolders:
+* Ordinary enemies should spawn as enemy squads, not many independent units.
+* Enemy squads attack the camp during night waves.
 
-* Units
-* Bases
-* UI
-* Projectiles
-* VFX
+Elite enemies and bosses:
 
-Scenes should go under:
+* Elite enemies may be represented as individual enemy heroes.
+* Bosses may be represented as unique individual boss entities.
 
-Assets/Game/Scenes/
+## Resources
 
-Art should go under:
+Use two main resource types:
 
-Assets/Game/Art/
+### Gold
 
-Audio should go under:
+Used for:
 
-Assets/Game/Audio/
+* Building structures.
+* Repairing structures.
+* Upgrading structures.
 
-## MVP scope
+### Energy / Command
 
-The MVP includes:
+Used for:
 
-* One battle scene
-* Main camera and battle layout
-* PlayerBase with HP
-* EnemyPortal / EnemySpawnGate without HP
-* One hero
-* Energy generation
-* Unit summoning
-* Basic unit movement
-* Basic melee/ranged combat
-* Enemy spawning
-* Wave progression and wave-clear win condition
-* Temporary run upgrades
-* Simple rewards after defeat
+* Summoning squads.
+* Restoring squads.
+* Possibly using commands or abilities.
 
-The MVP does not include:
+The existing EnergySystem can remain as the temporary combat resource system unless renamed later.
 
-* PvP
-* Clans
-* Ads
-* In-app purchases
-* Backend
-* Analytics
-* Complex meta progression
-* Multiple biomes
-* Final art
-* Final UI
-* Advanced animation system
+Add a separate Gold/resource system later.
 
-## Coding style
+## Enemy Design
 
-* Use C# events for UI updates where appropriate.
-* Use `SerializeField` for scene references in the early MVP.
-* Use plain C# classes for pure logic where possible.
-* Keep MonoBehaviour classes focused on Unity lifecycle, scene references, and presentation.
-* Keep runtime object creation inside factories/spawners.
-* Add short comments only when logic is not obvious.
-* Prefer clear names over clever abstractions.
-* Avoid premature optimization.
-* Avoid overengineering before the core battle loop is playable.
+Enemies should support different future roles and priorities.
 
-## Scene rules
+Possible enemy types later:
 
-The main prototype scene is:
+* Basic melee squad.
+* Ranged squad.
+* Siege squad.
+* Jumper that bypasses walls.
+* Bomber that damages structures.
+* Assassin that targets hero or squads.
+* Enemy hero.
+* Boss.
 
-Assets/Game/Scenes/BattleScene.unity
+For MVP:
 
-The battle scene should contain:
+* Use one basic enemy squad.
+* It moves toward the camp/main target.
+* It attacks valid targets in range.
+* It uses simple direct movement.
+
+## Technical Direction
+
+Use Unity 3D for new gameplay.
+
+Rules:
+
+* Use 3D scene objects.
+* Use 3D physics for new gameplay.
+* Units move on the XZ plane.
+* Y is height.
+* Use Collider / Rigidbody when needed.
+* Do not use Collider2D / Rigidbody2D for new gameplay.
+* Use Physics.OverlapSphere for simple detection in MVP.
+* Do not add NavMesh/pathfinding yet.
+* Use simple direct movement first.
+* Use an orthographic isometric/top-down camera.
+* Keep mobile performance in mind.
+
+## Architecture Rules
+
+Keep code simple, modular, and MVP-focused.
+
+General rules:
+
+* Prefer small focused components over large manager classes.
+* Use ScriptableObjects for configuration.
+* Use serialized references in MonoBehaviours for MVP.
+* Avoid global singletons for gameplay systems.
+* Avoid Service Locator unless explicitly approved.
+* Avoid FindObjectOfType and GameObject.Find in gameplay logic.
+* Do not introduce third-party packages without approval.
+* Do not implement ads, IAP, analytics, backend, multiplayer, or online features in MVP.
+* Do not modify unrelated files.
+* Do not change project settings unless explicitly requested.
+* Do not modify Unity scenes unless explicitly requested.
+* Do not use Unity MCP tools unless explicitly requested.
+
+## Suggested Core Components
+
+Reusable systems:
+
+* Team
+* Health
+* BaseController
+* EnergySystem
+* GoldResourceSystem
+* WaveConfig
+* WaveManager
+* HealthBarView
+
+3D gameplay systems to add or adapt:
+
+* HeroController
+* HeroAutoAttack
+* SquadConfig
+* SquadController
+* SquadCommandController
+* EnemySquadController
+* BuildingController
+* BuildingSlot
+* PhaseManager
+* MissionManager
+* AttackDirection
+* EnemySpawner3D
+
+## Scene Rules
+
+The old BattleScene can remain as a prototype backup.
+
+New 3D prototype scene:
+
+Assets/Game/Scenes/BattleScene3D.unity
+
+Expected scene structure:
 
 * Main Camera
+* Directional Light
 * BattleRoot
-* PlayerBaseSpawn
-* EnemyPortalSpawn or EnemySpawnGate
-* PlayerUnitSpawn
-* EnemyUnitSpawn
-* LaneRoot
-* UnitsRoot
-* ProjectilesRoot
-* VFXRoot
-* BattleCanvas
-* EventSystem
+  * ArenaRoot
+  * MainBuilding
+  * HeroSpawn
+  * SquadSpawn
+  * EnemyAttackDirections
+  * BuildingSlots
+  * UnitsRoot
+  * ProjectilesRoot
+  * VFXRoot
+  * BattleSystems
+  * BattleCanvas
+  * EventSystem
 
-Runtime-spawned units should be parented under `UnitsRoot`.
+Runtime-spawned squads/enemies should be parented under UnitsRoot.
 
-Runtime-spawned projectiles should be parented under `ProjectilesRoot`.
+Runtime-spawned projectiles should be parented under ProjectilesRoot.
 
-Runtime-spawned visual effects should be parented under `VFXRoot`.
+Runtime-spawned VFX should be parented under VFXRoot.
 
-Player units should move right and fight enemies. If they reach the right side, they should stop near the enemy portal and wait for enemies.
+## MVP Priority
 
-Enemy units should move left and attack PlayerBase if they reach it.
+Current development priority:
 
-EnemyPortal / EnemySpawnGate is a visual/source object and does not need HP.
+1. Save current prototype before 3D pivot.
+2. Create BattleScene3D.
+3. Set up 3D arena, orthographic isometric camera, and basic lighting.
+4. Add MainBuilding with Health and BaseController.
+5. Add hero joystick movement.
+6. Add hero auto-attack.
+7. Add day/night PhaseManager.
+8. Add one enemy attack direction.
+9. Add enemy squad movement on XZ plane.
+10. Add one player squad as a shared-HP gameplay object.
+11. Add basic squad selection.
+12. Add squad move command.
+13. Add squad attack command.
+14. Add Gold resource system.
+15. Keep Energy/Command for squad summon/restore.
+16. Add fixed building slots.
+17. Add one barracks slot.
+18. Add one wall slot.
+19. Connect night wave spawning and win/lose conditions.
 
-The player wins a wave when all enemies in that wave have spawned and all spawned enemies are defeated.
+## Avoid
 
-The player loses when PlayerBase is destroyed.
+Do not describe the current game as:
 
-## Current priority
+* 2D lane battler.
+* One horizontal lane.
+* Side-view base push game.
+* Enemy base destruction game.
 
-The current priority is to create a playable battle prototype.
+Do not use for new gameplay:
 
-Order of implementation:
-
-1. Project folder structure
-2. BattleScene setup
-3. Team enum
-4. Health component
-5. BaseController
-6. EnergySystem
-7. UnitConfig ScriptableObject
-8. UnitController
-9. UnitSpawner
-10. Basic combat
-11. Battle UI
-12. WaveManager
-13. Run upgrades
-14. Rewards after defeat
-
-Do not skip ahead to monetization, meta systems, or content expansion before the core battle loop is playable.
+* Physics2D.
+* Collider2D.
+* Rigidbody2D.
+* One-dimensional X-axis movement.
+* 2D lane-specific assumptions.
